@@ -1,0 +1,42 @@
+name: GoRest API Tests (Postman + Newman)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  newman-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Newman and reporters
+        run: |
+          npm install -g newman newman-reporter-htmlextra newman-reporter-junitfull
+
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Run Newman collection
+        run: |
+          newman run GoRest.postman_collection.json \
+            -e gorest-env.postman_environment.json \
+            -r htmlextra,junitfull \
+            --reporter-htmlextra-export reports/newman-report.html \
+            --reporter-junitfull-export reports/newman-report.xml
+
+      - name: Upload Newman HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-html-report
+          path: reports/newman-report.html
