@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite id="0" hostname="https://gorest.co.in" package="Smoke" name="Get Users" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:34.560" time="1.201">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Smoke / Get Users" name="Status code is 200" time="0.601"/>
+    <testcase classname="Smoke / Get Users" name="Response is an array of users" time="0.601"/>
+  </testsuite>
+  <testsuite id="1" hostname="https://gorest.co.in" package="Users CRUD" name="Create User" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:35.761" time="0.436">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Users CRUD / Create User" name="Status code is 201" time="0.218"/>
+    <testcase classname="Users CRUD / Create User" name="User ID is returned" time="0.218"/>
+  </testsuite>
+  <testsuite id="2" hostname="https://gorest.co.in" package="Users CRUD" name="Get User By Id" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:36.197" time="0.519">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Users CRUD / Get User By Id" name="Status code is 200" time="0.260"/>
+    <testcase classname="Users CRUD / Get User By Id" name="Returned user id matches environment userId" time="0.260"/>
+  </testsuite>
+  <testsuite id="3" hostname="https://gorest.co.in" package="Users CRUD" name="Update User" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:36.716" time="0.404">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Users CRUD / Update User" name="Status code is 200" time="0.202"/>
+    <testcase classname="Users CRUD / Update User" name="User name is updated" time="0.202"/>
+  </testsuite>
+  <testsuite id="4" hostname="https://gorest.co.in" package="Users CRUD" name="Delete User" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:37.120" time="0.411">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Users CRUD / Delete User" name="Status code is 204" time="0.205"/>
+    <testcase classname="Users CRUD / Delete User" name="Response body is empty" time="0.205"/>
+  </testsuite>
+  <testsuite id="5" hostname="https://gorest.co.in" package="Negative Tests" name="Get Deleted User (Expect 404)" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:37.531" time="0.406">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Negative Tests / Get Deleted User (Expect 404)" name="Status code is 404" time="0.203"/>
+    <testcase classname="Negative Tests / Get Deleted User (Expect 404)" name="Error message exists" time="0.203"/>
+  </testsuite>
+  <testsuite id="6" hostname="https://gorest.co.in" package="Negative Tests" name="Create User Invalid Payload (Expect 422)" tests="2" failures="0" errors="0" timestamp="2026-02-06T14:14:37.937" time="0.383">
+    <properties>
+      <property name="BASE_URL" value="https://gorest.co.in/public/v2"/>
+      <property name="TOKEN" value="955a10bebe07a9de7e7075c2103948db4d4b25a313ab06574bc4f576578d4b26"/>
+      <property name="userId" value="8360428"/>
+    </properties>
+    <testcase classname="Negative Tests / Create User Invalid Payload (Expect 422)" name="Status code is 422" time="0.192"/>
+    <testcase classname="Negative Tests / Create User Invalid Payload (Expect 422)" name="Validation errors are returned" time="0.192"/>
+  </testsuite>
+</testsuites>
