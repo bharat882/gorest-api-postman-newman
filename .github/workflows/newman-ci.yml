@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install Newman and reporters
         run: |
@@ -27,17 +27,25 @@ jobs:
       - name: Create reports directory
         run: mkdir -p reports
 
-      - name: Run Newman collection
+      - name: Run Newman collection (verbose)
         run: |
           newman run GoRest.postman_collection.json \
             -e gorest-env.postman_environment.json \
             -r htmlextra,junitfull \
+            --verbose \
             --reporter-htmlextra-export reports/newman-report.html \
             --reporter-junitfull-export reports/newman-report.xml
 
-
-      - name: Upload Newman HTML report
+      - name: Upload Newman HTML report (always)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: newman-html-report
           path: reports/newman-report.html
+
+      - name: Upload Newman JUnit report (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-junit-report
+          path: reports/newman-report.xml
