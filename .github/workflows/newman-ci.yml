@@ -2,9 +2,9 @@ name: GoRest API Tests (Postman + Newman)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -24,8 +24,55 @@ jobs:
         run: |
           npm install -g newman newman-reporter-htmlextra newman-reporter-junitfull
 
-      - name: Create reports directory
-        run: mkdir -p reports
+      - name: Show repo files (diagnostic)
+        run: |
+          echo "Working directory:"
+          pwd
+          echo "Files:"
+          ls -la
+          echo "Reports dir:"
+          mkdir -p reports
+          ls -la reports
+
+      # IMPORTANT: Do NOT commit real tokens in repo.
+      # Put your token into GitHub Secrets as: GOREST_TOKEN
+      - name: Patch environment JSON with BASE_URL + TOKEN (from Secrets)
+        env:
+          GOREST_TOKEN: ${{ secrets.GOREST_TOKEN }}
+        run: |
+          if [ -z "$GOREST_TOKEN" ]; then
+            echo "ERROR: Missing GitHub Secret GOREST_TOKEN"
+            echo "Fix: Repo > Settings > Secrets and variables > Actions > New repository secret"
+            exit 1
+          fi
+
+          node - <<'NODE'
+          const fs = require("fs");
+
+          const envPath = "gorest-env.postman_environment.json";
+          const raw = fs.readFileSync(envPath, "utf8");
+          const envJson = JSON.parse(raw);
+
+          const setVar = (key, value) => {
+            // Postman environments typically use envJson.values (array of {key,value,enabled})
+            envJson.values = envJson.values || [];
+            let v = envJson.values.find(x => x.key === key);
+            if (!v) {
+              v = { key, value, enabled: true };
+              envJson.values.push(v);
+            } else {
+              v.value = value;
+              v.enabled = true;
+            }
+          };
+
+          setVar("BASE_URL", "https://gorest.co.in/public/v2");
+          setVar("TOKEN", process.env.GOREST_TOKEN);
+          setVar("userId", ""); // ensure clean start each run
+
+          fs.writeFileSync(envPath, JSON.stringify(envJson, null, 2));
+          console.log("Patched environment JSON successfully.");
+          NODE
 
       - name: Run Newman collection (verbose)
         run: |
